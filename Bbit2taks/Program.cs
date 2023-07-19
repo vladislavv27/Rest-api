@@ -1,5 +1,5 @@
 
-using Bbit2taks.Models;
+using Bbit2taks.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bbit2taks
@@ -13,11 +13,11 @@ namespace Bbit2taks
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<MajaContext>(opt =>
-    opt.UseInMemoryDatabase("MajaList"));
+            builder.Services.AddDbContext<HouseContext>(options =>
+                options.UseSqlServer(connectionString));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
