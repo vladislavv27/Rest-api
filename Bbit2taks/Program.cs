@@ -30,7 +30,14 @@ namespace Bbit2taks
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+          
+            using (var scope = app.Services.CreateScope())
+            {
 
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                if (!dbContext.Houses.Any()) ApplicationDbContext.SeedData(dbContext);
+
+            }
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
