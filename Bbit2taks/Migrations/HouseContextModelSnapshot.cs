@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bbit2taks.Migrations
 {
-    [DbContext(typeof(HouseContext))]
+    [DbContext(typeof(Data.ApplicationDbContext))]
     partial class HouseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

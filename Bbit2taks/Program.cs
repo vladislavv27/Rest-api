@@ -1,5 +1,6 @@
 
 using Bbit2taks.Data;
+using Bbit2taks.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bbit2taks
@@ -16,8 +17,11 @@ namespace Bbit2taks
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<HouseContext>(options =>
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            builder.Services.AddScoped<HouseService>();
+            builder.Services.AddScoped<ApartmentService>();
+            builder.Services.AddScoped<ResidentService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

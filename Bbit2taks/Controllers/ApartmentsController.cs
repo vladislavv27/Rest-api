@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bbit2taks.Data;
 using Bbit2taks.Model;
+using Bbit2taks.Services;
 
 namespace Bbit2taks.Controllers
 {
@@ -14,33 +14,26 @@ namespace Bbit2taks.Controllers
     [ApiController]
     public class ApartmentsController : ControllerBase
     {
-        private readonly HouseContext _context;
+        private readonly ApartmentService _apartmentService;
 
-        public ApartmentsController(HouseContext context)
+        public ApartmentsController(ApartmentService apartmentService)
         {
-            _context = context;
+            _apartmentService = apartmentService;
         }
 
-        // GET: api/apartments
+        // GET api/apartments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Apartment>>> GetApartments()
         {
-            if (_context.Apartments == null)
-            {
-                return NotFound();
-            }
-            return await _context.Apartments.ToListAsync();
+            var apartments = await _apartmentService.GetApartments();
+            return Ok(apartments);
         }
 
-        // GET: api/apartments/{id}
+        // GET api/apartments/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Apartment>> GetApartment(int id)
+        public async Task<ActionResult<Apartment>> GetApartmentById(int id)
         {
-            if (_context.Apartments == null)
-            {
-                return NotFound();
-            }
-            var apartment = await _context.Apartments.FindAsync(id);
+            var apartment = await _apartmentService.GetApartmentById(id);
 
             if (apartment == null)
             {
@@ -50,75 +43,48 @@ namespace Bbit2taks.Controllers
             return Ok(apartment);
         }
 
-        // PUT: api/apartments/{id}
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutApartment(int id, Apartment apartment)
+        // POST api/apartments
+        [HttpPost]
+        public async Task<IActionResult> PostApartment(Apartment apartment)
         {
-            if (id != apartment.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            _context.Entry(apartment).State = EntityState.Modified;
+            await _apartmentService.CreateApartment(apartment);
 
-            try
+            return CreatedAtAction(nameof(GetApartmentById), new { id = apartment.Id }, apartment);
+        }
+
+        // PUT api/apartments/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutApartment(int id, Apartment updatedApartment)
+        {
+            if (!ModelState.IsValid)
             {
-                await _context.SaveChangesAsync();
+                return BadRequest(ModelState);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ApartmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            await _apartmentService.UpdateApartment(id, updatedApartment);
 
             return NoContent();
         }
 
-        // POST: api/apartments{id}
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Apartment>> PostApartment(Apartment apartment)
-        {
-            if (_context.Apartments == null)
-            {
-                return Problem("Entity set 'HouseContext.Apartments'  is null.");
-            }
-            _context.Apartments.Add(apartment);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetApartment", new { id = apartment.Id }, apartment);
-        }
-
-        // DELETE: api/apartments/{id}
+        // DELETE api/apartments/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApartment(int id)
         {
-            if (_context.Apartments == null)
-            {
-                return NotFound();
-            }
-            var apartment = await _context.Apartments.FindAsync(id);
-            if (apartment == null)
-            {
-                return NotFound();
-            }
+            await _apartmentService.DeleteApartment(id);
 
-            _context.Apartments.Remove(apartment);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok();
         }
-
-        private bool ApartmentExists(int id)
+        // GET api/apartments/{id}/residents
+        [HttpGet("{apartmentId}/residents")]
+        public async Task<ActionResult<List<Resident>>> GetApartmentsResident(int apartmentId)
         {
-            return (_context.Apartments?.Any(e => e.Id == id)).GetValueOrDefault();
+            var residents = await _apartmentService.GetApartmentsResident(apartmentId);
+            return Ok(residents);
         }
     }
 }

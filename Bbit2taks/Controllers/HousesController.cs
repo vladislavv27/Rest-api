@@ -2,44 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Bbit2taks.Data;
 using Bbit2taks.Model;
+using Bbit2taks.Services;
+
 
 namespace Bbit2taks.Controllers
 {
     [Route("api/houses")]
     public class HousesController : ControllerBase
     {
-        private readonly HouseContext _context;
+        private HouseService _houseService;
 
-        public HousesController(HouseContext context)
+        public HousesController(HouseService houseService)
         {
-            _context = context;
+            _houseService = houseService;
         }
 
-        // GET: api/Houses
+        // GET api/houses
         [HttpGet]
         public async Task<ActionResult<IEnumerable<House>>> GetHouses()
         {
-            if (_context.Houses == null)
-            {
-                return NotFound();
-            }
-            return await _context.Houses.ToListAsync();
+            var houses=await _houseService.GetHouses();
+            return Ok(houses);
         }
 
-        // GET: api/houses/{id}
+        // GET api/houses/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<House>> GetHouse(int id)
+        public async Task<ActionResult<House>> GetHouseById(int id)
         {
-            if (_context.Houses == null)
-            {
-                return NotFound();
-            }
-            var house = await _context.Houses.FindAsync(id);
+            var house = await _houseService.GetHouseById(id);
 
             if (house == null)
             {
@@ -49,74 +41,48 @@ namespace Bbit2taks.Controllers
             return Ok(house);
         }
 
-        // PUT: api/houses/5
+        // POST api/houses
+        [HttpPost]
+        public async Task<IActionResult> PostHouse(House house)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _houseService.CreateHouse(house);
+
+            return CreatedAtRoute("DefaultApi", new { id = house.Id }, house);
+        }
+
+        // PUT api/houses/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHouse(int id, House house)
         {
-            if (id != house.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            _context.Entry(house).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HouseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _houseService.UpdateHouse(id, house);
 
             return NoContent();
         }
 
-        // POST: api/houses{id}
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<House>> PostHouse(House house)
-        {
-            if (_context.Houses == null)
-            {
-                return Problem("Entity set 'HouseContext.Houses'  is null.");
-            }
-            _context.Houses.Add(house);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetHouse", new { id = house.Id }, house);
-        }
-
-        // DELETE: api/houses/{id}
+        // DELETE api/houses/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHouse(int id)
         {
-            if (_context.Houses == null)
-            {
-                return NotFound();
-            }
-            var house = await _context.Houses.FindAsync(id);
-            if (house == null)
-            {
-                return NotFound();
-            }
+            await _houseService.DeleteHouse(id);
 
-            _context.Houses.Remove(house);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok();
         }
-
-        private bool HouseExists(int id)
+        // GET api/houses/{id}/apartments
+        [HttpGet("{houseId}/apartments")]
+        public async Task<ActionResult<List<Resident>>> GetHouseApartments(int houseId)
         {
-            return (_context.Houses?.Any(e => e.Id == id)).GetValueOrDefault();
+            var apartments = await _houseService.GetHouseApartments(houseId);
+            return Ok(apartments);
         }
     }
 }

@@ -16,8 +16,6 @@ namespace Bbit2taks.Model
         public double LivingSpace { get; set; }
         [ForeignKey("HouseId")]
         public int HouseId { get; set; }
-
-
-
+        
     }
 }

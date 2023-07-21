@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bbit2taks.Data
 {
-    public class HouseContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public HouseContext(DbContextOptions<HouseContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }

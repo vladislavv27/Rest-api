@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bbit2taks.Migrations
 {
-    [DbContext(typeof(HouseContext))]
+    [DbContext(typeof(Data.ApplicationDbContext))]
     [Migration("20230719093449_InitialCreate")]
     partial class InitialCreate
     {
