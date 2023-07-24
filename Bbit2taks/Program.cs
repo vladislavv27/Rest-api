@@ -1,6 +1,7 @@
 
 using Bbit2taks.Data;
 using Bbit2taks.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bbit2taks
@@ -22,9 +23,11 @@ namespace Bbit2taks
             builder.Services.AddScoped<HouseService>();
             builder.Services.AddScoped<ApartmentService>();
             builder.Services.AddScoped<ResidentService>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
