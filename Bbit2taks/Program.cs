@@ -24,10 +24,10 @@ namespace Bbit2taks
             builder.Services.AddScoped<ApartmentService>();
             builder.Services.AddScoped<ResidentService>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            
             var app = builder.Build();
 
-
+   
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -42,7 +42,7 @@ namespace Bbit2taks
 
             }
             app.UseHttpsRedirection();
-
+            app.UseCors(policy=>policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseAuthorization();
 
 
