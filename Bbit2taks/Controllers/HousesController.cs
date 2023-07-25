@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bbit2taks.Model;
 using Bbit2taks.Services;
+using Microsoft.EntityFrameworkCore.Internal;
 
 
 namespace Bbit2taks.Controllers
@@ -55,19 +56,22 @@ namespace Bbit2taks.Controllers
             return CreatedAtRoute("DefaultApi", new { id = house.Id }, house);
         }
 
-        // PUT api/houses/{id}
+        // PUT api/house/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHouse(int id, House house)
+        public async Task<IActionResult> PutHouse(int id, [FromBody] House updatedHouse)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _houseService.UpdateHouse(id, house);
+            await _houseService.UpdateHouse(id, updatedHouse);
 
             return NoContent();
         }
+
+
+
 
         // DELETE api/houses/{id}
         [HttpDelete("{id}")]

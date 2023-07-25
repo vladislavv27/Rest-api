@@ -33,25 +33,25 @@ namespace Bbit2taks.Services
                 await _context.SaveChangesAsync();
             }
 
-            public async Task UpdateHouse(int id, House house)
+        public async Task UpdateHouse(int id, House updatedHouse)
+        {
+            var house = await _context.Houses.FindAsync(id);
+
+            if (house == null)
             {
-                House existingHouse = await _context.Houses.FirstOrDefaultAsync(h => h.Id == id);
-                if (existingHouse == null)
-                {
-                    return;
-                }
-
-                // Update the properties of the existingHouse object with the new values from the house object.
-                existingHouse.Number = house.Number;
-                existingHouse.Street = house.Street;
-                existingHouse.City = house.City;
-                existingHouse.Country = house.Country;
-                existingHouse.Postcode = house.Postcode;
-
-                await _context.SaveChangesAsync();
+                return;
             }
 
-            public async Task DeleteHouse(int id)
+            house.Number = updatedHouse.Number;
+            house.Street = updatedHouse.Street;
+            house.City = updatedHouse.City;
+            house.Country = updatedHouse.Country;
+            house.Postcode = updatedHouse.Postcode;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteHouse(int id)
             {
                 House house = await _context.Houses.FirstOrDefaultAsync(h => h.Id == id);
                 if (house != null)
