@@ -44,7 +44,7 @@ namespace Bbit2taks.Controllers
 
         // POST api/houses
         [HttpPost]
-        public async Task<IActionResult> PostHouse(House house)
+        public async Task<IActionResult> PostHouse([FromBody] House house)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +53,7 @@ namespace Bbit2taks.Controllers
 
             await _houseService.CreateHouse(house);
 
-            return CreatedAtAction(nameof(PostHouse), new { id = house.Id }, house);
+            return NoContent();
         }
 
         // PUT api/house/{id}
