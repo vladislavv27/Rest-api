@@ -53,7 +53,7 @@ namespace Bbit2taks.Controllers
 
             await _houseService.CreateHouse(house);
 
-            return CreatedAtRoute("DefaultApi", new { id = house.Id }, house);
+            return CreatedAtAction(nameof(PostHouse), new { id = house.Id }, house);
         }
 
         // PUT api/house/{id}

@@ -31,10 +31,10 @@ namespace Bbit2taks.Data
 
             var residents = new List<Resident>
             {
-            new Resident { Name = "Vladislavs", Surname = "Mihailovs", PersonalCode = "1234567890", DateOfBirth = new DateTime(1985, 5, 10), Phone = "26245165", Email = "john.doe@example.com", IsOwner = true, ApartmentId = apartments[0].Id },
-            new Resident { Name = "Jane", Surname = "Smith", PersonalCode = "9876543210", DateOfBirth = new DateTime(1990, 7, 15), Phone = "26245190", Email = "jane.smith@example.com", IsOwner = true, ApartmentId = apartments[1].Id },
-            new Resident { Name = "Alice", Surname = "Johnson", PersonalCode = "5555555555", DateOfBirth = new DateTime(1988, 3, 25), Phone = "26291165", Email = "alice.johnson@example.com", IsOwner = false, ApartmentId = apartments[2].Id },
-            new Resident { Name = "Bob", Surname = "Williams", PersonalCode = "7777777777", DateOfBirth = new DateTime(1975, 12, 5), Phone = "29545165", Email = "bob.williams@example.com", IsOwner = true, ApartmentId = apartments[3].Id }
+            new Resident { Name = "Vladislavs", Surname = "Mihailovs", PersonalCode = "1234567890", DateOfBirth = new DateTime(1985, 5, 10), Phone = "26245165", Email = "john.doe@example.com", IsOwner = true, ApartmentId = 1 },
+            new Resident { Name = "Jane", Surname = "Smith", PersonalCode = "9876543210", DateOfBirth = new DateTime(1990, 7, 15), Phone = "26245190", Email = "jane.smith@example.com", IsOwner = true, ApartmentId = 2 },
+            new Resident { Name = "Alice", Surname = "Johnson", PersonalCode = "5555555555", DateOfBirth = new DateTime(1988, 3, 25), Phone = "26291165", Email = "alice.johnson@example.com", IsOwner = false, ApartmentId = 2 },
+            new Resident { Name = "Bob", Surname = "Williams", PersonalCode = "7777777777", DateOfBirth = new DateTime(1975, 12, 5), Phone = "29545165", Email = "bob.williams@example.com", IsOwner = true, ApartmentId = 1}
             };
             context.Residents.AddRange(residents);
 

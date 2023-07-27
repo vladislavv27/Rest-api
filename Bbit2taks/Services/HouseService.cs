@@ -27,10 +27,11 @@ namespace Bbit2taks.Services
                 return await _context.Houses.FirstOrDefaultAsync(h => h.Id == id);
             }
 
-            public async Task CreateHouse(House house)
+            public async Task<House> CreateHouse(House house)
             {
                 _context.Houses.Add(house);
                 await _context.SaveChangesAsync();
+                return house;
             }
 
         public async Task UpdateHouse(int id, House updatedHouse)
