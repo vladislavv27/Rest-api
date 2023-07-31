@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Bbit2taks.Model;
 using Bbit2taks.Services;
 using Microsoft.EntityFrameworkCore.Internal;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bbit2taks.Controllers
 {
@@ -22,6 +22,7 @@ namespace Bbit2taks.Controllers
 
         // GET api/houses
         [HttpGet]
+        [Authorize(Roles = "Manager,Resident")]
         public async Task<ActionResult<IEnumerable<House>>> GetHouses()
         {
             var houses=await _houseService.GetHouses();
@@ -30,6 +31,7 @@ namespace Bbit2taks.Controllers
 
         // GET api/houses/{id}
         [HttpGet("{id}")]
+        [Authorize(Roles = "Manager,Resident")]
         public async Task<ActionResult<House>> GetHouseById(int id)
         {
             var house = await _houseService.GetHouseById(id);
@@ -44,6 +46,8 @@ namespace Bbit2taks.Controllers
 
         // POST api/houses
         [HttpPost]
+        [Authorize(Roles = "Manager")]
+
         public async Task<IActionResult> PostHouse([FromBody] House house)
         {
             if (!ModelState.IsValid)
@@ -58,6 +62,7 @@ namespace Bbit2taks.Controllers
 
         // PUT api/house/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> PutHouse(int id, [FromBody] House updatedHouse)
         {
             if (!ModelState.IsValid)
@@ -75,6 +80,7 @@ namespace Bbit2taks.Controllers
 
         // DELETE api/houses/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteHouse(int id)
         {
             await _houseService.DeleteHouse(id);
@@ -83,6 +89,7 @@ namespace Bbit2taks.Controllers
         }
         // GET api/houses/{id}/apartments
         [HttpGet("{houseId}/apartments")]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult<List<Resident>>> GetHouseApartments(int houseId)
         {
             var apartments = await _houseService.GetHouseApartments(houseId);

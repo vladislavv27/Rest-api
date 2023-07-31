@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Bbit2taks.Data;
 using Bbit2taks.Model;
 using Bbit2taks.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bbit2taks.Controllers
 {
@@ -24,6 +25,7 @@ namespace Bbit2taks.Controllers
 
         // GET api/residents
         [HttpGet]
+        [Authorize(Roles = "Manager,Resident")]
         public async Task<ActionResult<IEnumerable<Resident>>> GetResidents()
         {
             var residents = await _residentService.GetResidents();
@@ -32,6 +34,8 @@ namespace Bbit2taks.Controllers
 
         // GET api/residents/{id}
         [HttpGet("{id}")]
+        [Authorize(Roles = "Manager,Resident")]
+
         public async Task<ActionResult<Resident>> GetResidentById(int id)
         {
             var resident = await _residentService.GetResidentById(id);
@@ -46,6 +50,8 @@ namespace Bbit2taks.Controllers
 
         // POST api/residents
         [HttpPost]
+        [Authorize(Roles = "Manager")]
+
         public async Task<IActionResult> PostResident(Resident resident)
         {
             if (!ModelState.IsValid)
@@ -60,6 +66,8 @@ namespace Bbit2taks.Controllers
 
         // PUT api/residents/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "Manager,Resident")]
+
         public async Task<IActionResult> PutResident(int id, Resident updatedResident)
         {
             if (!ModelState.IsValid)
@@ -74,6 +82,8 @@ namespace Bbit2taks.Controllers
 
         // DELETE api/residents/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Manager")]
+
         public async Task<IActionResult> DeleteResident(int id)
         {
             await _residentService.DeleteResident(id);
