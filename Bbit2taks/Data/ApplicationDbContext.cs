@@ -21,11 +21,11 @@ namespace Bbit2taks.Data
 
             var apartments = new List<Apartment>
             {
-            new Apartment { Number = 101, Floor = 1, NumberOfRooms = 3, Population = 2, FullArea = 80.5, LivingSpace = 70.0, HouseId = house1.Id },
-            new Apartment { Number = 102, Floor = 1, NumberOfRooms = 4, Population = 4, FullArea = 100.0, LivingSpace = 90.0, HouseId = house1.Id },
-            new Apartment { Number = 201, Floor = 2, NumberOfRooms = 2, Population = 1, FullArea = 60.0, LivingSpace = 50.0, HouseId = house2.Id },
-            new Apartment { Number = 202, Floor = 3, NumberOfRooms = 3, Population = 3, FullArea = 75.0, LivingSpace = 65.0, HouseId = house2.Id },
-            new Apartment { Number = 203, Floor = 2, NumberOfRooms = 2, Population = 2, FullArea = 65.0, LivingSpace = 55.0, HouseId = house2.Id }
+            new Apartment { Number = 101, Floor = 1, NumberOfRooms = 3, Population = 2, FullArea = 80.5, LivingSpace = 70.0, HouseId = 1 },
+            new Apartment { Number = 102, Floor = 1, NumberOfRooms = 4, Population = 4, FullArea = 100.0, LivingSpace = 90.0, HouseId = 1 },
+            new Apartment { Number = 201, Floor = 2, NumberOfRooms = 2, Population = 1, FullArea = 60.0, LivingSpace = 50.0, HouseId = 0 },
+            new Apartment { Number = 202, Floor = 3, NumberOfRooms = 3, Population = 3, FullArea = 75.0, LivingSpace = 65.0, HouseId = 2 },
+            new Apartment { Number = 203, Floor = 2, NumberOfRooms = 2, Population = 2, FullArea = 65.0, LivingSpace = 55.0, HouseId = 2 }
             };
             context.Apartments.AddRange(apartments);
 

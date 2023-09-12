@@ -9,7 +9,7 @@ namespace Bbit2taks.Services
 
     public class ApartmentService
     {
-        private readonly ApplicationDbContext _context; // Replace "YourDbContext" with your actual DbContext class
+        private readonly ApplicationDbContext _context; 
 
         public ApartmentService(ApplicationDbContext context)
         {
@@ -39,11 +39,9 @@ namespace Bbit2taks.Services
 
             if (apartment == null)
             {
-                // Apartment not found
                 return;
             }
 
-            // Update apartment properties
             apartment.Number = updatedApartment.Number;
             apartment.Floor = updatedApartment.Floor;
             apartment.NumberOfRooms = updatedApartment.NumberOfRooms;

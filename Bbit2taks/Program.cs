@@ -1,5 +1,4 @@
 ﻿
-using Bbit2taks.Authentication;
 using Bbit2taks.Data;
 using Bbit2taks.Services;
 using Microsoft.AspNetCore.Hosting;
@@ -24,17 +23,9 @@ namespace Bbit2taks
             builder.Services.AddScoped<HouseService>();
             builder.Services.AddScoped<ApartmentService>();
             builder.Services.AddScoped<ResidentService>();
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            builder.Services.AddIdentityServer()
-              .AddInMemoryClients(Config.Clients)
-              .AddInMemoryIdentityResources(Config.IdentityResources)
-              .AddInMemoryApiScopes(Config.ApiScopes)
-              .AddInMemoryApiResources(Config.ApiResources)
-              .AddTestUsers(Config.Users)
-              .AddDeveloperSigningCredential();
+           
 
             var app = builder.Build();
-            app.UseIdentityServer();
 
             if (app.Environment.IsDevelopment())
             {
