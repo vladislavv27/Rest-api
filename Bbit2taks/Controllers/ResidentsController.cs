@@ -9,6 +9,8 @@ using Bbit2taks.Data;
 using Bbit2taks.Model;
 using Bbit2taks.Services;
 using Microsoft.AspNetCore.Authorization;
+using Bbit2taks.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Bbit2taks.Controllers
 {
@@ -50,7 +52,7 @@ namespace Bbit2taks.Controllers
 
         // POST api/residents
         [HttpPost]
- 
+        [Authorize(Roles = "Manager")]
 
         public async Task<IActionResult> PostResident(Resident resident)
         {
@@ -66,23 +68,40 @@ namespace Bbit2taks.Controllers
 
         // PUT api/residents/{id}
         [HttpPut("{id}")]
- 
 
-        public async Task<IActionResult> PutResident(int id, Resident updatedResident)
+
+        public async Task<IActionResult> PutResident(int id, CombinedRequestModel combinedRequestModel)
         {
+            string jwt = combinedRequestModel.JwtToken;
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(jwt);
+            var datafromtoken = token.Payload.Values.ToList();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            if (datafromtoken[18].ToString() == "Manager")
+            {
+                await _residentService.UpdateResident(id, combinedRequestModel.Resident);
 
-            await _residentService.UpdateResident(id, updatedResident);
+            }
+            else
+            {
+                if (int.Parse(datafromtoken[17].ToString()) == id)
+                {
+                    await _residentService.UpdateResident(id, combinedRequestModel.Resident);
+
+                }
+            }
+
+
 
             return NoContent();
         }
 
         // DELETE api/residents/{id}
         [HttpDelete("{id}")]
- 
+        [Authorize(Roles = "Manager")]
 
         public async Task<IActionResult> DeleteResident(int id)
         {

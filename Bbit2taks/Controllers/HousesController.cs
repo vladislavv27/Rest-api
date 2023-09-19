@@ -45,7 +45,7 @@ namespace Bbit2taks.Controllers
 
         // POST api/houses
         [HttpPost]
- 
+        [Authorize(Roles = "Manager")]
 
         public async Task<IActionResult> PostHouse([FromBody] House house)
         {
@@ -61,7 +61,7 @@ namespace Bbit2taks.Controllers
 
         // PUT api/house/{id}
         [HttpPut("{id}")]
- 
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> PutHouse(int id, [FromBody] House updatedHouse)
         {
             if (!ModelState.IsValid)
@@ -79,7 +79,7 @@ namespace Bbit2taks.Controllers
 
         // DELETE api/houses/{id}
         [HttpDelete("{id}")]
- 
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteHouse(int id)
         {
             await _houseService.DeleteHouse(id);

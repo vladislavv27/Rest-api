@@ -50,7 +50,7 @@ namespace Bbit2taks.Controllers
 
         // POST api/apartments
         [HttpPost]
- 
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> PostApartment(Apartment apartment)
         {
             if (!ModelState.IsValid)
@@ -65,7 +65,7 @@ namespace Bbit2taks.Controllers
 
         // PUT api/apartments/{id}
         [HttpPut("{id}")]
- 
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> PutApartment(int id, Apartment updatedApartment)
         {
             if (!ModelState.IsValid)
@@ -80,7 +80,7 @@ namespace Bbit2taks.Controllers
 
         // DELETE api/apartments/{id}
         [HttpDelete("{id}")]
- 
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteApartment(int id)
         {
             await _apartmentService.DeleteApartment(id);
