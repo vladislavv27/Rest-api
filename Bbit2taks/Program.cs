@@ -3,6 +3,9 @@ using Bbit2taks.Data;
 using Bbit2taks.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Bbit2taks
 {
@@ -23,8 +26,18 @@ namespace Bbit2taks
             builder.Services.AddScoped<HouseService>();
             builder.Services.AddScoped<ApartmentService>();
             builder.Services.AddScoped<ResidentService>();
-           
 
+            // Configure JWT authentication
+            builder.Services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "https://localhost:44476/";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false, // You may need to configure this based on your setup
+                                              // Other validation parameters
+                };
+            });
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())

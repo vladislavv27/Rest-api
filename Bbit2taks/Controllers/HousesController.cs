@@ -22,15 +22,16 @@ namespace Bbit2taks.Controllers
 
         // GET api/houses
         [HttpGet]
-   
+
         public async Task<ActionResult<IEnumerable<House>>> GetHouses()
         {
-            var houses=await _houseService.GetHouses();
+            var houses = await _houseService.GetHouses();
             return Ok(houses);
         }
 
         // GET api/houses/{id}
         [HttpGet("{id}")]
+
         public async Task<ActionResult<House>> GetHouseById(int id)
         {
             var house = await _houseService.GetHouseById(id);
@@ -47,6 +48,7 @@ namespace Bbit2taks.Controllers
         [HttpPost]
         [Authorize(Roles = "Manager")]
 
+
         public async Task<IActionResult> PostHouse([FromBody] House house)
         {
             if (!ModelState.IsValid)
@@ -62,6 +64,7 @@ namespace Bbit2taks.Controllers
         // PUT api/house/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Manager")]
+
         public async Task<IActionResult> PutHouse(int id, [FromBody] House updatedHouse)
         {
             if (!ModelState.IsValid)
@@ -80,6 +83,7 @@ namespace Bbit2taks.Controllers
         // DELETE api/houses/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "Manager")]
+
         public async Task<IActionResult> DeleteHouse(int id)
         {
             await _houseService.DeleteHouse(id);
@@ -88,7 +92,7 @@ namespace Bbit2taks.Controllers
         }
         // GET api/houses/{id}/apartments
         [HttpGet("{houseId}/apartments")]
- 
+
         public async Task<ActionResult<List<Resident>>> GetHouseApartments(int houseId)
         {
             var apartments = await _houseService.GetHouseApartments(houseId);

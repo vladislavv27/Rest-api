@@ -27,7 +27,7 @@ namespace Bbit2taks.Controllers
 
         // GET api/residents
         [HttpGet]
- 
+
         public async Task<ActionResult<IEnumerable<Resident>>> GetResidents()
         {
             var residents = await _residentService.GetResidents();
@@ -36,7 +36,7 @@ namespace Bbit2taks.Controllers
 
         // GET api/residents/{id}
         [HttpGet("{id}")]
- 
+
 
         public async Task<ActionResult<Resident>> GetResidentById(int id)
         {
@@ -52,7 +52,7 @@ namespace Bbit2taks.Controllers
 
         // POST api/residents
         [HttpPost]
-        [Authorize(Roles = "Manager")]
+
 
         public async Task<IActionResult> PostResident(Resident resident)
         {
@@ -101,7 +101,7 @@ namespace Bbit2taks.Controllers
 
         // DELETE api/residents/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Manager")]
+
 
         public async Task<IActionResult> DeleteResident(int id)
         {
