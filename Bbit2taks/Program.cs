@@ -26,7 +26,9 @@ namespace Bbit2taks
             builder.Services.AddScoped<HouseService>();
             builder.Services.AddScoped<ApartmentService>();
             builder.Services.AddScoped<ResidentService>();
-
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddSession();
+            builder.Services.AddDistributedMemoryCache();
             // Configure JWT authentication
             builder.Services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
@@ -55,6 +57,7 @@ namespace Bbit2taks
             }
             app.UseHttpsRedirection();
             app.UseCors(policy=>policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

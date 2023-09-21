@@ -19,15 +19,16 @@ namespace Bbit2taks.Controllers
     public class ResidentsController : ControllerBase
     {
         private readonly ResidentService _residentService;
+        private readonly IHttpContextAccessor _httpContextAccessor; // Add this field
 
-        public ResidentsController(ResidentService residentService)
+        public ResidentsController(ResidentService residentService, IHttpContextAccessor httpContextAccessor)
         {
             _residentService = residentService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET api/residents
         [HttpGet]
-
         public async Task<ActionResult<IEnumerable<Resident>>> GetResidents()
         {
             var residents = await _residentService.GetResidents();
@@ -36,7 +37,6 @@ namespace Bbit2taks.Controllers
 
         // GET api/residents/{id}
         [HttpGet("{id}")]
-
 
         public async Task<ActionResult<Resident>> GetResidentById(int id)
         {
@@ -53,28 +53,10 @@ namespace Bbit2taks.Controllers
         // POST api/residents
         [HttpPost]
 
-
         public async Task<IActionResult> PostResident(Resident resident)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await _residentService.CreateResident(resident);
-
-            return CreatedAtAction(nameof(GetResidentById), new { id = resident.Id }, resident);
-        }
-
-        // PUT api/residents/{id}
-        [HttpPut("{id}")]
-
-
-        public async Task<IActionResult> PutResident(int id, CombinedRequestModel combinedRequestModel)
-        {
-            string jwt = combinedRequestModel.JwtToken;
             var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(jwt);
+            var token = handler.ReadJwtToken(HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
             var datafromtoken = token.Payload.Values.ToList();
             if (!ModelState.IsValid)
             {
@@ -82,30 +64,53 @@ namespace Bbit2taks.Controllers
             }
             if (datafromtoken[18].ToString() == "Manager")
             {
-                await _residentService.UpdateResident(id, combinedRequestModel.Resident);
+                resident.Id = 0;
+                await _residentService.CreateResident(resident);
 
             }
-            else
+
+            return CreatedAtAction(nameof(GetResidentById), new { id = resident.Id }, resident);
+        }
+
+        // PUT api/residents/{id}
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> PutResident(int id, Resident resident)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
+            var datafromtoken = token.Payload.Values.ToList();
+
+            if (!ModelState.IsValid)
             {
-                if (int.Parse(datafromtoken[17].ToString()) == id)
-                {
-                    await _residentService.UpdateResident(id, combinedRequestModel.Resident);
-
-                }
+                return BadRequest(ModelState);
             }
+            if (datafromtoken[18].ToString() == "Manager" || int.Parse(datafromtoken[17].ToString()) == id && datafromtoken[18].ToString() == "Resident")
+            {
+                await _residentService.UpdateResident(id, resident);
 
-
+            }
 
             return NoContent();
         }
 
+
+
+
+
         // DELETE api/residents/{id}
         [HttpDelete("{id}")]
 
-
         public async Task<IActionResult> DeleteResident(int id)
         {
-            await _residentService.DeleteResident(id);
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
+            var datafromtoken = token.Payload.Values.ToList();
+            if (datafromtoken[18].ToString() == "Manager" || int.Parse(datafromtoken[17].ToString()) == id && datafromtoken[18].ToString() == "Resident")
+            {
+                await _residentService.DeleteResident(id);
+
+            }
 
             return Ok();
         }
