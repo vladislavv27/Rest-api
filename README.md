@@ -64,7 +64,3 @@ This project lays the foundation for an extensive property management system. Fu
 The Property Management REST API is a powerful tool for managing property-related data efficiently and accurately. Its modular architecture and robust features make it a valuable asset for property management applications.
 
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/property-management-api.git
